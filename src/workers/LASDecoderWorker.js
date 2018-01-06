@@ -140,19 +140,19 @@ onmessage = function (event) {
 		intensities[i] = intensity;
 
 		// RETURN NUMBER, stored in the first 3 bits - 00000111
-		var returnNumber = bufferView[i * pointSize + 14] & 7;
+		var returnNumber = bufferView[i * pointSize + 14] & 15;
 		returnNumbers[i] = returnNumber;
 
 		// NUMBER OF RETURNS, stored in 00111000
-		numberOfReturns[i] = (bufferView[i * pointSize + 14] & 56) / 8;
+		numberOfReturns[i] = (bufferView[i * pointSize + 14] & 240) / 8;
 
 		// CLASSIFICATION
-		var classification = bufferView[i * pointSize + 15];
+		var classification = bufferView[i * pointSize + 16];
 		classifications[i] = classification;
 
 		// POINT SOURCE ID
-		tempUint8[0] = bufferView[i * pointSize + 18];
-		tempUint8[1] = bufferView[i * pointSize + 19];
+		tempUint8[0] = bufferView[i * pointSize + 22];
+		tempUint8[1] = bufferView[i * pointSize + 23];
 		var pointSourceID = tempUint16[0];
 		pointSourceIDs[i] = pointSourceID;
 

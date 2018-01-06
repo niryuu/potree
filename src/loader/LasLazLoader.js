@@ -41,12 +41,12 @@ Potree.LasLazLoader = class LasLazLoader {
 		xhr.overrideMimeType('text/plain; charset=x-user-defined');
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4) {
-				if (xhr.status === 200) {
+				//if (xhr.status === 200) {
 					let buffer = xhr.response;
 					scope.parse(node, buffer);
-				} else {
-					console.log('Failed to load file! HTTP status: ' + xhr.status + ', file: ' + url);
-				}
+				//} else {
+				//	console.log('Failed to load file! HTTP status: ' + xhr.status + ', file: ' + url);
+				//}
 			}
 		};
 
@@ -72,6 +72,7 @@ Potree.LasLazLoader = class LasLazLoader {
 				});
 		}).then(function (lf) {
 			return lf.getHeader().then(function (h) {
+				console.log(h)
 				return [lf, h];
 			});
 		}).then(function (v) {
@@ -82,7 +83,7 @@ Potree.LasLazLoader = class LasLazLoader {
 			let totalRead = 0;
 			let totalToRead = (skip <= 1 ? header.pointsCount : header.pointsCount / skip);
 			let reader = function () {
-				let p = lf.readData(1000000, 0, skip);
+				let p = lf.readData(100000000, 0, skip);
 				return p.then(function (data) {
 					handler.push(new LASDecoder(data.buffer,
 						header.pointsFormatId,
@@ -155,12 +156,12 @@ Potree.LasLazBatcher = class LasLazBatcher {
 			let geometry = new THREE.BufferGeometry();
 			let numPoints = lasBuffer.pointsCount;
 
-			/*
-			TODO Unused:
-			let endsWith = function (str, suffix) {
-				return str.indexOf(suffix, str.length - suffix.length) !== -1;
-			};
-			*/
+
+			//TODO Unused:
+			//let endsWith = function (str, suffix) {
+			//	return str.indexOf(suffix, str.length - suffix.length) !== -1;
+			//};
+
 
 			let positions = e.data.position;
 			let colors = new Uint8Array(e.data.color);
@@ -169,6 +170,7 @@ Potree.LasLazBatcher = class LasLazBatcher {
 			let returnNumbers = new Uint8Array(e.data.returnNumber);
 			let numberOfReturns = new Uint8Array(e.data.numberOfReturns);
 			let pointSourceIDs = new Uint16Array(e.data.pointSourceID);
+			console.log(colors)
 			// let indices = new ArrayBuffer(numPoints*4);
 			// let iIndices = new Uint32Array(indices);
 
